@@ -10,17 +10,17 @@
  */
 define('FTS_URL', 'http://fts.unocha.org/api/v1/');
 
-function fts_get_appeal($id) {
+function fts_api_get_appeal($id) {
   $xml = simplexml_load_file(FTS_URL . 'appeal/id/' . $id . '.xml');
   return $xml->Appeal;
 }
 
-function fts_get_funding_by_appeal($id) {
+function fts_api_get_funding_by_appeal($id) {
   $xml = simplexml_load_file(FTS_URL . 'funding.xml?appeal=' . $id);
   return $xml->total;
 }
 
-function fts_get_appeal_with_funding($id) {
+function fts_api_get_appeal_with_funding($id) {
   $appeal = fts_get_appeal($id);
   $funding = fts_get_funding_by_appeal($id);
   $appeal->funding = $funding;
