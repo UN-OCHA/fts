@@ -21,8 +21,8 @@ function fts_api_get_funding_by_appeal($id) {
 }
 
 function fts_api_get_appeal_with_funding($id) {
-  $appeal = fts_get_appeal($id);
-  $funding = fts_get_funding_by_appeal($id);
+  $appeal = fts_api_get_appeal($id);
+  $funding = fts_api_get_funding_by_appeal($id);
   $appeal->funding = $funding;
   return $appeal;
 }
