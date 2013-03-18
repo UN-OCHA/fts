@@ -1,0 +1,4 @@
+name = FTS API
+description = Provides an API that can be used to make calls to the Financial Tracking Service system.
+core = 7.x
+package = "FTS"

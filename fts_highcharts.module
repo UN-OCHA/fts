@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * Provides integration between the FTS API and Highcharts graphs.
+ */
+
+/**
+ * Implements hook_block
+ */
+function fts_highcharts_block_info() {
+  $blocks['fts_highcharts'] = array(
+    'info' => t('Latest Funding Info'),
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view()
+ */
+function fts_highcharts_block_view($delta = '') {
+  if ($delta == 'fts_highcharts') {
+    $options = _fts_highcharts_options(985);
+    $attributes = array();
+    $block['content'] = highcharts_render($options, $attributes);
+  }
+  return $block;
+}
+
+function _fts_highcharts_options($id) {
+  // Get latest FTS data
+  $appeal = fts_api_get_appeal_with_funding($id);
+  $financed = $appeal->funding;
+  $not_financed = $appeal->current_requirements - $appeal->funding;
+  $options = new stdClass();
+  
+  // Chart
+  $options->chart = (object)array(
+    'renderTo' => 'container',
+    'plotBackgroundColor' => NULL,
+    'plotBorderWidth' => NULL,
+    'plotShadow' => FALSE,
+  );
+  
+  // Title
+  $options->title->text = 'Test';
+  
+  // Plot options.
+  $options->plotOptions->pie = (object)array(
+    'allowPointSelect' => TRUE,
+    'cursor' => 'pointer',
+    'dataLabels' => array(
+      'enabled' => FALSE,
+    ),
+    'showInLegend' => TRUE,
+  );
+
+  // Series.
+  $options->series = array();
+  $series = new StdClass();
+  $series->type = 'pie';
+  $series->name = '';
+  $series->data = array();
+  $series->data[] = array('Financed', $financed);
+  $series->data[] = array('Not Financed', $not_financed);
+
+  // Selected item is an object.
+  /*$selected = new stdClass();
+  $selected->name = 'Apple';
+  $selected->y = 12.8;
+  $selected->sliced = TRUE;
+  $selected->selected = TRUE;
+  $series->data[] = $selected;
+
+  $series->data[] = array('Lemon merengue', 8.5);
+  $series->data[] = array('Mincemeat', 6.2);
+  $series->data[] = array('Others', 0.7);*/
+
+  $options->series[] = $series;
+
+  // Diable credits.
+  $options->credits->enabled = FALSE;
+
+  return $options;
+}

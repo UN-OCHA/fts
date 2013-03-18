@@ -1,0 +1,7 @@
+name = FTS Highcharts
+description = Integrates the FTS API with the Highcharts library.
+core = 7.x
+package = "FTS"
+
+dependencies[] = fts_api
+dependencies[] = highcharts
