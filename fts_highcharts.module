@@ -79,6 +79,7 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
       foreach ($clusters as $cluster) {
         $data_clusters[] = array($cluster->name, (int)$cluster->current_requirement);
       }
+    }
   }
   else {
     $data[] = array('Financed', $financed);
