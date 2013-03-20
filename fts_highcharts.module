@@ -59,8 +59,8 @@ function fts_highcharts_block_view($delta = '') {
 function _fts_highcharts_options($id) {
   // Get latest FTS data
   $appeal = fts_api_get_appeal_with_funding($id);
-  $financed = $appeal->funding;
-  $not_financed = $appeal->current_requirements - $appeal->funding;
+  $financed = (int)$appeal->funding;
+  $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding;
   $options = new stdClass();
   
   // Chart
@@ -72,7 +72,7 @@ function _fts_highcharts_options($id) {
   );
   
   // Title
-  $options->title->text = 'Test';
+  $options->title->text = $appeal->type.' '.$appeal->year.' '.t('for').' '.$appeal->country;
   
   // Plot options.
   $options->plotOptions->pie = (object)array(
