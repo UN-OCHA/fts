@@ -72,6 +72,13 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
       $data[] = array($group->type, (int)$group->amount);
       $categories[] = $group->type;
     }
+    
+    if ($groupby == 'cluster') {
+      $data_clusters = array();
+      $clusters = $appeal->clusters->ArrayOfCluster->Cluster;
+      foreach ($clusters as $cluster) {
+        $data_clusters[] = array($cluster->name, (int)$cluster->current_requirement);
+      }
   }
   else {
     $data[] = array('Financed', $financed);
@@ -82,6 +89,13 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   $serie->name = t('Funding Status');
   $serie->data = $data;
   $series[] = $serie;
+  
+  if ($groupby == 'cluster') {
+    $serie = new stdClass();
+    $serie->name = t('Current requirements');
+    $serie->data = $data_clusters;
+    $series[] = $serie;
+  }
   
   $options = new stdClass();
   
@@ -108,6 +122,8 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     ),
     'showInLegend' => TRUE,
   );
+  
+  $options->plotOptions->series = (object)array('stacking' => 'normal');
 
   // Series.
   /*$options->series = array();

@@ -24,11 +24,26 @@ function fts_api_get_funding_by_appeal($id, $groupby = '') {
   return $xml;
 }
 
+function fts_api_get_cluster_by_appeal($id) {
+  $url = FTS_URL . 'cluster/appeal/'.$id.'.xml';
+  $xml = simplexml_load_file($url);
+  return $xml;
+}
+
 function fts_api_get_appeal_with_funding($id, $groupby = '') {
   $appeal = fts_api_get_appeal($id);
-  $funding = fts_api_get_funding_by_appeal($id, $groupby);
   $appeal = json_decode(json_encode($appeal));
+  
+  $funding = fts_api_get_funding_by_appeal($id, $groupby);
   $funding = json_decode(json_encode($funding));
   $appeal->funding = $funding;
+  
+  switch ($groupby) {
+    case 'cluster':
+      $clusters = fts_api_get_cluster_by_appeal($id);
+      $clusters = json_decode(json_encode($clusters));
+      $appeal->clusters = $clusters;
+      break;
+  }
   return $appeal;
 }
