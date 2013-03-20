@@ -68,7 +68,6 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
         $group->type = '';
       }
       $serie = new stdClass();
-      $serie->type = $type;
       $serie->name = $group->type;
       $serie->data = array((int)$group->amount);
       $series[] = $serie;
@@ -87,6 +86,7 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     'plotBackgroundColor' => NULL,
     'plotBorderWidth' => NULL,
     'plotShadow' => FALSE,
+    'type' => $type,
   );
   
   // Title
