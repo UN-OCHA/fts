@@ -60,6 +60,10 @@ function _fts_highcharts_options($id, $groupby = '') {
   $appeal = fts_api_get_appeal_with_funding($id, $groupby);
   $financed = (int)$appeal->funding->total;
   $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding->total;
+  if (!empty($groupby)) {
+    debug($appeal->funding);
+  }
+  
   $options = new stdClass();
   
   // Chart
