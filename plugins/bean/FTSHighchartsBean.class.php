@@ -39,7 +39,7 @@ class FTSHighchartsBean extends BeanPlugin {
       $default_node_view_mode = $bean->settings['node_view_mode'];
     }*/
     $form['settings']['appeal'] = array(
-      '#type' => 'text',
+      '#type' => 'textfield',
       '#title' => t('Appeal ID'),
       '#required' => TRUE,
     );
