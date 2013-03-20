@@ -75,7 +75,7 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     
     if ($groupby == 'cluster') {
       $data_clusters = array();
-      $clusters = $appeal->clusters->ArrayOfCluster->Cluster;
+      $clusters = $appeal->clusters->Cluster;
       foreach ($clusters as $cluster) {
         $data_clusters[] = array($cluster->name, (int)$cluster->current_requirement);
       }
@@ -86,17 +86,17 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     $data[] = array('Not Financed', $not_financed);
   }
   
-  $serie = new stdClass();
-  $serie->name = t('Funding Status');
-  $serie->data = $data;
-  $series[] = $serie;
-  
   if ($groupby == 'cluster') {
     $serie = new stdClass();
     $serie->name = t('Current requirements');
     $serie->data = $data_clusters;
     $series[] = $serie;
   }
+  
+  $serie = new stdClass();
+  $serie->name = t('Funding Status');
+  $serie->data = $data;
+  $series[] = $serie;
   
   $options = new stdClass();
   
