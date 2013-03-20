@@ -61,21 +61,36 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   $financed = (int)$appeal->funding->total;
   $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding->total;
   $series = array();
+  $data = array();
   if (!empty($groupby)) {
     $groups = $appeal->funding->grouping->group;
     foreach ($groups as $group) {
       if (is_object($group->type)) {
         $group->type = '';
       }
-      $serie = new stdClass();
-      $serie->name = $group->type;
-      $serie->data = array((int)$group->amount);
-      $series[] = $serie;
+      switch ($type) {
+        case 'pie':
+          $data[] = array($group->type, (int)$group->amount);
+          break;
+        case 'bar':
+          $serie = new stdClass();
+          $serie->name = $group->type;
+          $serie->data = array((int)$group->amount);
+          $series[] = $serie;
+          break;
+      }
     }
   }
   else {
     $data[] = array('Financed', $financed);
     $data[] = array('Not Financed', $not_financed);
+  }
+  
+  if ($type == 'pie') {
+    $serie = new stdClass();
+    $serie->name = t('Funding Status');
+    $serie->data = $data;
+    $series[] = $serie;
   }
   
   $options = new stdClass();
