@@ -27,7 +27,6 @@ function fts_highcharts_bean_types() {
       'parent' => 'bean',
     ),
     'path' => $plugin_path,
-    'file' => 'fts_highcharts.bean.inc',
   );
   return $plugins;
 }
