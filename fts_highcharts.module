@@ -5,6 +5,33 @@
  * Provides integration between the FTS API and Highcharts graphs.
  */
 
+
+/**
+ * Implements hook_bean_types_api_info().
+ */
+function fts_highcharts_bean_types_api_info() {
+  return array('api' => 4);
+}
+
+/**
+ * Implements hook_bean_types().
+ */
+function fts_highcharts_bean_types() {
+  $plugins = array();
+  $plugin_path = drupal_get_path('module', 'fts_highcharts') . '/plugins/bean';
+  $plugins['fts_highcharts'] = array(
+    'label' => t('FTS Funding Status'),
+    'description' => t('Display Funding Status Charts using Highcharts.'),
+    'handler' => array(
+      'class' => 'FTSHighchartsBean',
+      'parent' => 'bean',
+    ),
+    'path' => $plugin_path,
+    'file' => 'fts_highcharts.bean.inc',
+  );
+  return $plugins;
+}
+
 /**
  * Implements hook_block
  */

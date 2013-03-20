@@ -5,3 +5,4 @@ package = "FTS"
 
 dependencies[] = fts_api
 dependencies[] = highcharts
+dependencies[] = bean
