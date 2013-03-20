@@ -104,7 +104,7 @@ class FTSHighchartsBean extends BeanPlugin {
    * Displays the bean.
    */
   public function view($bean, $content, $view_mode = 'default', $langcode = NULL) {
-    $options = _fts_highcharts_options($bean->settings['appeal']);
+    $options = _fts_highcharts_options($bean->settings['appeal'], $bean->settings['groupby']);
     $attributes = array();
     $content = highcharts_render($options, $attributes);
     return $content;
