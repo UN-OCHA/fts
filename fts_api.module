@@ -27,6 +27,8 @@ function fts_api_get_funding_by_appeal($id, $groupby = '') {
 function fts_api_get_appeal_with_funding($id, $groupby = '') {
   $appeal = fts_api_get_appeal($id);
   $funding = fts_api_get_funding_by_appeal($id, $groupby);
+  $appeal = json_decode(json_encode($appeal));
+  $funding = json_decode(json_encode($funding));
   $appeal->funding = $funding;
   return $appeal;
 }
