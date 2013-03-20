@@ -45,6 +45,7 @@ class FTSHighchartsBean extends BeanPlugin {
     );
     
     $groupby_options = array(
+      '' => t('None'),
       'clusters' => t('Clusters'),
     );
     
