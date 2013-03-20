@@ -55,7 +55,7 @@ function fts_highcharts_block_view($delta = '') {
   return $block;
 }
 
-function _fts_highcharts_options($id, $groupby = '') {
+function _fts_highcharts_options($id, $groupby = '', $type = '') {
   // Get latest FTS data
   $appeal = fts_api_get_appeal_with_funding($id, $groupby);
   $financed = (int)$appeal->funding->total;
@@ -64,6 +64,9 @@ function _fts_highcharts_options($id, $groupby = '') {
   if (!empty($groupby)) {
     $groups = $appeal->funding->grouping->group;
     foreach ($groups as $group) {
+      if (is_object($group->type)) {
+        $group->type = '';
+      }
       $data[] = array($group->type, (int)$group->amount);
     }
   }
@@ -98,7 +101,7 @@ function _fts_highcharts_options($id, $groupby = '') {
   // Series.
   $options->series = array();
   $series = new StdClass();
-  $series->type = 'pie';
+  $series->type = $type;
   $series->name = '';
   $series->data = $data;
 

@@ -11,7 +11,9 @@ class FTSHighchartsBean extends BeanPlugin {
   public function values() {
     $values = array(
       'settings' => array(
+        'type' => 'pie',
         'appeal' => FALSE,
+        'groupby' => '',
       ),
     );
 
@@ -27,17 +29,27 @@ class FTSHighchartsBean extends BeanPlugin {
       '#tree' => 1,
       '#title' => t('Settings'),
     );
-    /*$node_view_modes = array();
-    $entity_info = entity_get_info();
-    foreach ($entity_info['node']['view modes'] as $key => $value) {
-      $node_view_modes[$key] = $value['label'];
-    }
-    if (!isset($bean->settings['node_view_mode'])) {
-      $default_node_view_mode = 'full';
+    
+    $type_options = array(
+      'pie' => t('Pie'),
+      'bar' => t('Bar'),
+    );
+    
+    if (!isset($bean->settings['type'])) {
+      $default_type = 'pie';
     }
     else {
-      $default_node_view_mode = $bean->settings['node_view_mode'];
-    }*/
+      $default_type = $bean->settings['type'];
+    }
+    
+    $form['settings']['type'] = array(
+      '#type' => 'select',
+      '#title' => t('Type'),
+      '#options' => $type_options,
+      '#default_value' => $default_type,
+      '#required' => TRUE,
+      '#multiple' => FALSE,
+    );
     
     if (!isset($bean->settings['appeal'])) {
       $default_appeal = '';
@@ -104,7 +116,7 @@ class FTSHighchartsBean extends BeanPlugin {
    * Displays the bean.
    */
   public function view($bean, $content, $view_mode = 'default', $langcode = NULL) {
-    $options = _fts_highcharts_options($bean->settings['appeal'], $bean->settings['groupby']);
+    $options = _fts_highcharts_options($bean->settings['appeal'], $bean->settings['groupby'], $bean->settings['type']);
     $attributes = array();
     $content = highcharts_render($options, $attributes);
     return $content;
