@@ -64,7 +64,7 @@ function _fts_highcharts_options($id, $groupby = '') {
   if (!empty($groupby)) {
     $groups = $appeal->funding->grouping->group;
     foreach ($groups as $group) {
-      $data[] = array($group->type, $group->amount);
+      $data[] = array($group->type, (int)$group->amount);
     }
   }
   else {
