@@ -75,7 +75,7 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
         case 'bar':
           $serie = new stdClass();
           $serie->name = $group->type;
-          $serie->data = array((int)$group->amount);
+          $serie->data = array($group->type, (int)$group->amount);
           $series[] = $serie;
           break;
       }
