@@ -61,6 +61,7 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   $financed = (int)$appeal->funding->total;
   $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding->total;
   $series = array();
+  $categories = array();
   $data = array();
   if (!empty($groupby)) {
     $groups = $appeal->funding->grouping->group;
@@ -69,6 +70,7 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
         $group->type = '';
       }
       $data[] = array($group->type, (int)$group->amount);
+      $categories[] = $group->type;
     }
   }
   else {
@@ -82,6 +84,8 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   $series[] = $serie;
   
   $options = new stdClass();
+  
+  $options->xAxis->categories = $categories;
   
   // Chart
   $options->chart = (object)array(
