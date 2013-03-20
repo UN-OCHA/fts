@@ -60,14 +60,17 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   $appeal = fts_api_get_appeal_with_funding($id, $groupby);
   $financed = (int)$appeal->funding->total;
   $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding->total;
-  $data = array();
+  $series = array();
   if (!empty($groupby)) {
     $groups = $appeal->funding->grouping->group;
     foreach ($groups as $group) {
       if (is_object($group->type)) {
         $group->type = '';
       }
-      $data[] = array($group->type, (int)$group->amount);
+      $serie = new stdClass();
+      $serie->name = $group->type;
+      $serie->data = array((int)$group->amount);
+      $series[] = $serie;
     }
   }
   else {
@@ -99,11 +102,11 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   );
 
   // Series.
-  $options->series = array();
+  /*$options->series = array();
   $series = new StdClass();
   $series->type = $type;
   $series->name = '';
-  $series->data = $data;
+  $series->data = $data;*/
 
   // Selected item is an object.
   /*$selected = new stdClass();
@@ -117,7 +120,9 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   $series->data[] = array('Mincemeat', 6.2);
   $series->data[] = array('Others', 0.7);*/
 
-  $options->series[] = $series;
+  //$options->series[] = $series;
+  
+  $options->series = $series;
 
   // Diable credits.
   $options->credits->enabled = FALSE;
