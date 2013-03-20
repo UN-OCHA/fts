@@ -43,6 +43,26 @@ class FTSHighchartsBean extends BeanPlugin {
       '#title' => t('Appeal ID'),
       '#required' => TRUE,
     );
+    
+    $groupby_options = array(
+      'clusters' => t('Clusters'),
+    );
+    
+    if (!isset($bean->settings['groupby'])) {
+      $default_groupby = '';
+    }
+    else {
+      $default_groupby = $bean->settings['groupby'];
+    }
+    
+    $form['settings']['groupby'] = array(
+      '#type' => 'select',
+      '#title' => t('Group By'),
+      '#options' => $groupby_options,
+      '#default_value' => $default_groupby,
+      '#required' => FALSE,
+      '#multiple' => FALSE,
+    );
     /*if (!$records_shown = $bean->settings['records_shown']) {
       $records_shown = 5;
     }
