@@ -15,14 +15,18 @@ function fts_api_get_appeal($id) {
   return $xml->Appeal;
 }
 
-function fts_api_get_funding_by_appeal($id) {
-  $xml = simplexml_load_file(FTS_URL . 'funding.xml?appeal=' . $id);
-  return $xml->total;
+function fts_api_get_funding_by_appeal($id, $groupby = '') {
+  $url = FTS_URL . 'funding.xml?appeal=' . $id;
+  if (!empty($groupby)) {
+    $url .= '&groupby='.$groupby;
+  }
+  $xml = simplexml_load_file($url);
+  return $xml;
 }
 
-function fts_api_get_appeal_with_funding($id) {
+function fts_api_get_appeal_with_funding($id, $groupby = '') {
   $appeal = fts_api_get_appeal($id);
-  $funding = fts_api_get_funding_by_appeal($id);
+  $funding = fts_api_get_funding_by_appeal($id, $groupby);
   $appeal->funding = $funding;
   return $appeal;
 }

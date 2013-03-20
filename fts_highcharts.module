@@ -55,11 +55,11 @@ function fts_highcharts_block_view($delta = '') {
   return $block;
 }
 
-function _fts_highcharts_options($id) {
+function _fts_highcharts_options($id, $groupby = '') {
   // Get latest FTS data
-  $appeal = fts_api_get_appeal_with_funding($id);
-  $financed = (int)$appeal->funding;
-  $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding;
+  $appeal = fts_api_get_appeal_with_funding($id, $groupby);
+  $financed = (int)$appeal->funding->total;
+  $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding->total;
   $options = new stdClass();
   
   // Chart
