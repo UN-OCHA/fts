@@ -11,12 +11,7 @@ class FTSHighchartsBean extends BeanPlugin {
   public function values() {
     $values = array(
       'settings' => array(
-        'node_view_mode' => FALSE,
-        'records_shown' => FALSE,
-      ),
-      'more_link' => array(
-        'text' => '',
-        'path' => '',
+        'appeal' => FALSE,
       ),
     );
 
@@ -30,9 +25,9 @@ class FTSHighchartsBean extends BeanPlugin {
     $form['settings'] = array(
       '#type' => 'fieldset',
       '#tree' => 1,
-      '#title' => t('Output'),
+      '#title' => t('Settings'),
     );
-    $node_view_modes = array();
+    /*$node_view_modes = array();
     $entity_info = entity_get_info();
     foreach ($entity_info['node']['view modes'] as $key => $value) {
       $node_view_modes[$key] = $value['label'];
@@ -42,16 +37,13 @@ class FTSHighchartsBean extends BeanPlugin {
     }
     else {
       $default_node_view_mode = $bean->settings['node_view_mode'];
-    }
-    $form['settings']['node_view_mode'] = array(
-      '#type' => 'select',
-      '#title' => t('Node View Mode'),
-      '#options' => $node_view_modes,
-      '#default_value' => $default_node_view_mode,
+    }*/
+    $form['settings']['appeal'] = array(
+      '#type' => 'text',
+      '#title' => t('Appeal ID'),
       '#required' => TRUE,
-      '#multiple' => FALSE,
     );
-    if (!$records_shown = $bean->settings['records_shown']) {
+    /*if (!$records_shown = $bean->settings['records_shown']) {
       $records_shown = 5;
     }
     $form['settings']['records_shown'] = array(
@@ -74,7 +66,7 @@ class FTSHighchartsBean extends BeanPlugin {
       '#type' => 'textfield',
       '#title' => t('Link path'),
       '#default_value' => $bean->more_link['path'],
-    );
+    );*/
     return $form;
   }
 
@@ -82,24 +74,9 @@ class FTSHighchartsBean extends BeanPlugin {
    * Displays the bean.
    */
   public function view($bean, $content, $view_mode = 'default', $langcode = NULL) {
-    $query = new EntityFieldQuery();
-    $query
-      ->entityCondition('entity_type', 'node')
-      ->entityCondition('bundle', 'article')
-      ->propertyCondition('status', 1)
-      ->propertyOrderBy('created', 'DESC')
-      ->range(0, $bean->settings['records_shown']);
-    $result = $query->execute();
-    if (empty($result)) {
-      $content['nodes'] = array();
-    }
-    else {
-      foreach ($result['node'] as $node) {
-        $node = node_load($node->nid, $node->vid);
-        $content['nodes'][$node->nid] = node_view($node, $bean->settings['node_view_mode']);
-      }
-    }
-    $content['more_link']['#markup'] = theme('article_listing_more_link', array('text' => $bean->more_link['text'], 'path' => $bean->more_link['path']));
+    $options = _fts_highcharts_options($bean->settings['appeal']);
+    $attributes = array();
+    $content = highcharts_render($options, $attributes);
     return $content;
   }
 }
