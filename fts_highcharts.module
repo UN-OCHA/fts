@@ -68,17 +68,7 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
       if (is_object($group->type)) {
         $group->type = '';
       }
-      switch ($type) {
-        case 'pie':
-          $data[] = array($group->type, (int)$group->amount);
-          break;
-        case 'bar':
-          $serie = new stdClass();
-          $serie->name = $group->type;
-          $serie->data = array($group->type, (int)$group->amount);
-          $series[] = $serie;
-          break;
-      }
+      $data[] = array($group->type, (int)$group->amount);
     }
   }
   else {
@@ -86,12 +76,10 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     $data[] = array('Not Financed', $not_financed);
   }
   
-  if ($type == 'pie') {
-    $serie = new stdClass();
-    $serie->name = t('Funding Status');
-    $serie->data = $data;
-    $series[] = $serie;
-  }
+  $serie = new stdClass();
+  $serie->name = t('Funding Status');
+  $serie->data = $data;
+  $series[] = $serie;
   
   $options = new stdClass();
   
