@@ -108,8 +108,8 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   
   // Colors
   $options->colors = array(
-    '#A7A6A6',
-    '#6C99D7',
+    '#D3D3D3',
+    '#3067BB',
     '#58AE6E',
     '#D23646',
     '#C49C5B',
