@@ -115,12 +115,12 @@ function _fts_highcharts_options($settings) {
       $not_financed_data[] = array($name, $values['not_financed']);
     }
     $series[] = (object)array(
-      'name' => t('Financed'),
-      'data' => $financed_data,
-    );
-    $series[] = (object)array(
       'name' => t('Not Financed'),
       'data' => $not_financed_data,
+    );
+    $series[] = (object)array(
+      'name' => t('Financed'),
+      'data' => $financed_data,
     );
   }
   
