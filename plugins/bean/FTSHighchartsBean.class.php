@@ -68,6 +68,7 @@ class FTSHighchartsBean extends BeanPlugin {
     $groupby_options = array(
       '' => t('None'),
       'cluster' => t('Cluster'),
+      'donor' => t('Donor'),
     );
     
     if (!isset($bean->settings['groupby'])) {

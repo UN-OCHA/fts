@@ -112,15 +112,6 @@ function _fts_highcharts_options($settings) {
   $options->chart->type = $type;
   $options->tooltip->formatter = '';
   
-  // Chart
-  /*$options->chart = (object)array(
-    'renderTo' => 'container',
-    'plotBackgroundColor' => NULL,
-    'plotBorderWidth' => NULL,
-    'plotShadow' => FALSE,
-    'type' => $type,
-  );*/
-  
   // Colors
   $options->colors = array(
     '#3067BB',
@@ -133,18 +124,6 @@ function _fts_highcharts_options($settings) {
   
   // Title
   $options->title->text = $title;
-  
-  // Plot options.
-  /*$options->plotOptions->pie = (object)array(
-    'allowPointSelect' => TRUE,
-    'cursor' => 'pointer',
-    'dataLabels' => array(
-      'enabled' => FALSE,
-    ),
-    'showInLegend' => TRUE,
-  );*/
-  
-  //$options->plotOptions->series = (object)array('stacking' => 'normal');
   
   $options->series = $series;
 
