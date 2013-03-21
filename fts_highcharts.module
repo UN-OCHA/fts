@@ -100,6 +100,7 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     if ($groupby == 'cluster') {
       $cluster_data[] = array($name, $values['cluster']);
     }
+    $categories[] = $name;
   }
   
   if ($groupby == 'cluster') {
