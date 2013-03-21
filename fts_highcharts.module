@@ -67,8 +67,8 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     }
   }
   else {
-    $funding_data[] = array('Financed', $financed);
     $funding_data[] = array('Not Financed', $not_financed);
+    $funding_data[] = array('Financed', $financed);
   }
   
   uasort($data, "_fts_highcharts_sort_cluster");
