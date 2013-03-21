@@ -117,10 +117,12 @@ function _fts_highcharts_options($settings) {
     $series[] = (object)array(
       'name' => t('Not Financed'),
       'data' => $not_financed_data,
+      'color' => '#D3D3D3',
     );
     $series[] = (object)array(
       'name' => t('Financed'),
       'data' => $financed_data,
+      'color' => '#3067BB',
     );
   }
   
