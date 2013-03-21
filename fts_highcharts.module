@@ -93,6 +93,8 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     $funding_data[] = array('Not Financed', $not_financed);
   }
   
+  usort($data, "_fts_highcharts_sort_cluster");
+  
   foreach ($data as $name => $values) {
     $funding_data[] = array($name, $values['funding']);
     if ($groupby == 'cluster') {
@@ -168,4 +170,13 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   $options->credits->enabled = FALSE;
 
   return $options;
+}
+
+function _fts_highcharts_sort_cluster($a, $b) {
+  $a_total = $a['funding'] + $a['cluster'];
+  $b_total = $b['funding'] + $b['cluster'];
+  if ($a_total == $b_total) {
+    return 0;
+  }
+  return ($a_total < $b_total) ? -1 : 1;
 }
