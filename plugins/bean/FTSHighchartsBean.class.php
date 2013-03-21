@@ -85,30 +85,6 @@ class FTSHighchartsBean extends BeanPlugin {
       '#required' => FALSE,
       '#multiple' => FALSE,
     );
-    /*if (!$records_shown = $bean->settings['records_shown']) {
-      $records_shown = 5;
-    }
-    $form['settings']['records_shown'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Records shown'),
-      '#size' => 5,
-      '#default_value' => $records_shown,
-    );
-    $form['more_link'] = array(
-      '#type' => 'fieldset',
-      '#tree' => 1,
-      '#title' => t('More link'),
-    );
-    $form['more_link']['text'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Link text'),
-      '#default_value' => $bean->more_link['text'],
-    );
-    $form['more_link']['path'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Link path'),
-      '#default_value' => $bean->more_link['path'],
-    );*/
     return $form;
   }
 
@@ -116,7 +92,9 @@ class FTSHighchartsBean extends BeanPlugin {
    * Displays the bean.
    */
   public function view($bean, $content, $view_mode = 'default', $langcode = NULL) {
-    $options = _fts_highcharts_options($bean->settings['appeal'], $bean->settings['groupby'], $bean->settings['type']);
+    $settings = $bean->settings;
+    $settings['title'] = $bean->title;
+    $options = _fts_highcharts_options($settings);
     $attributes = array();
     $content = highcharts_render($options, $attributes);
     return $content;

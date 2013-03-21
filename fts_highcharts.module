@@ -31,11 +31,12 @@ function fts_highcharts_bean_types() {
   return $plugins;
 }
 
-function _fts_highcharts_options($id, $groupby = '', $type = '') {
+function _fts_highcharts_options($settings) {
+  extract($settings);
   // Hack while we wait for a proper highcharts setting in the configuration
   variable_set('highcharts_exporting', 1);
   // Get latest FTS data
-  $appeal = fts_api_get_appeal_with_funding($id, $groupby);
+  $appeal = fts_api_get_appeal_with_funding($appeal, $groupby);
   $financed = (int)$appeal->funding->total;
   $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding->total;
   $series = array();
@@ -119,7 +120,7 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   );
   
   // Title
-  $options->title->text = $appeal->type.' '.$appeal->year.' '.t('for').' '.$appeal->country;
+  $options->title->text = $title;
   
   // Plot options.
   $options->plotOptions->pie = (object)array(
