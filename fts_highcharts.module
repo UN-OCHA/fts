@@ -101,6 +101,9 @@ function _fts_highcharts_options($settings) {
     case 'bar':
       $highcharts = new HighchartsOptionsBarStacked();
       break;
+    case 'pie':
+      $highcharts = new HighchartsOptionsPieBasic();
+      break;
   }
   
   $options = $highcharts->render();
