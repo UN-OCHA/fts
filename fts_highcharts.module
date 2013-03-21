@@ -35,68 +35,94 @@ function _fts_highcharts_options($settings) {
   extract($settings);
   // Hack while we wait for a proper highcharts setting in the configuration
   variable_set('highcharts_exporting', 1);
-  // Get latest FTS data
-  $appeal = fts_api_get_appeal_with_funding($appeal, $groupby);
-  $financed = (int)$appeal->funding->total;
-  $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding->total;
+  // Get appeals
+  $appeals = explode(',', $appeal);
   $series = array();
   $categories = array();
   $data = array();
-  $funding_data = array();
-  if (!empty($groupby)) {
-    $groups = $appeal->funding->grouping->group;
-    foreach ($groups as $group) {
-      if (is_string($group->type)) {
-        $data[$group->type]['funding'] = (int)$group->amount;
+  if (count($appeals) == 1) {
+    // Get latest FTS data
+    $appeal = fts_api_get_appeal_with_funding($appeal, $groupby);
+    $financed = (int)$appeal->funding->total;
+    $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding->total;
+    $funding_data = array();
+    if (!empty($groupby)) {
+      $groups = $appeal->funding->grouping->group;
+      foreach ($groups as $group) {
+        if (is_string($group->type)) {
+          $data[$group->type]['funding'] = (int)$group->amount;
+        }
       }
-    }
-    
-    if ($groupby == 'cluster') {
-      $data_clusters = array();
-      $clusters = $appeal->clusters->Cluster;
-      foreach ($clusters as $cluster) {
-        if (!empty($cluster->name)) {
-          if (!isset($data[$cluster->name]['funding'])) {
-            $data[$cluster->name]['funding'] = 0;
-          }
-          $data[$cluster->name]['cluster'] = (int)$cluster->current_requirement - (int)$data[$cluster->name]['funding'];
-          if ($data[$cluster->name]['cluster'] < 0) {
-            $data[$cluster->name]['cluster'] = 0;
+      
+      if ($groupby == 'cluster') {
+        $data_clusters = array();
+        $clusters = $appeal->clusters->Cluster;
+        foreach ($clusters as $cluster) {
+          if (!empty($cluster->name)) {
+            if (!isset($data[$cluster->name]['funding'])) {
+              $data[$cluster->name]['funding'] = 0;
+            }
+            $data[$cluster->name]['cluster'] = (int)$cluster->current_requirement - (int)$data[$cluster->name]['funding'];
+            if ($data[$cluster->name]['cluster'] < 0) {
+              $data[$cluster->name]['cluster'] = 0;
+            }
           }
         }
       }
     }
-  }
-  else {
-    $funding_data[] = array('Financed', $financed);
-    $funding_data[] = array('Not Financed', $not_financed);
-  }
-  
-  if ($groupby == 'cluster') {
-    uasort($data, "_fts_highcharts_sort_cluster");
-  }
-  
-  foreach ($data as $name => $values) {
-    $funding_data[] = array($name, $values['funding']);
-    if ($groupby == 'cluster') {
-      $cluster_data[] = array($name, $values['cluster']);
+    else {
+      $funding_data[] = array('Financed', $financed);
+      $funding_data[] = array('Not Financed', $not_financed);
     }
-    $categories[] = $name;
-  }
-  
-  if ($groupby == 'cluster') {
+    
+    if ($groupby == 'cluster') {
+      uasort($data, "_fts_highcharts_sort_cluster");
+    }
+    
+    foreach ($data as $name => $values) {
+      $funding_data[] = array($name, $values['funding']);
+      if ($groupby == 'cluster') {
+        $cluster_data[] = array($name, $values['cluster']);
+      }
+      $categories[] = $name;
+    }
+    
+    if ($groupby == 'cluster') {
+      $serie = new stdClass();
+      $serie->name = t('Unmet requirements');
+      $serie->data = $cluster_data;
+      $serie->color = '#D3D3D3';
+      $series[] = $serie;
+    }
+    
     $serie = new stdClass();
-    $serie->name = t('Unmet requirements');
-    $serie->data = $cluster_data;
-    $serie->color = '#D3D3D3';
+    $serie->name = t('Funding Status');
+    $serie->data = $funding_data;
+    $serie->color = '#3067BB';
     $series[] = $serie;
   }
-  
-  $serie = new stdClass();
-  $serie->name = t('Funding Status');
-  $serie->data = $funding_data;
-  $serie->color = '#3067BB';
-  $series[] = $serie;
+  else {
+    foreach ($appeals as $appeal) {
+      $appeal = fts_api_get_appeal_with_funding($appeal, $groupby);
+      $data[$appeal->name]['financed'] = (int)$appeal->funding->total;
+      $data[$appeal->name]['not_financed'] = (int)$appeal->current_requirements - (int)$appeal->funding->total;
+    }
+    $financed_data = array();
+    $not_financed_data = array();
+    foreach ($data as $name => $values) {
+      $categories[] = $name;
+      $financed_data[] = array($name, $values['financed']);
+      $not_financed_data[] = array($name, $values['not_financed']);
+    }
+    $series[] = (object)array(
+      'name' => t('Financed'),
+      'data' => $financed_data,
+    );
+    $series[] = (object)array(
+      'name' => t('Not Financed'),
+      'data' => $not_financed_data,
+    );
+  }
   
   $highcharts = new stdClass();
   switch ($type) {
