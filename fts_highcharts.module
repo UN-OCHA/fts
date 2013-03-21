@@ -110,6 +110,7 @@ function _fts_highcharts_options($settings) {
   
   $options->xAxis->categories = $categories;
   $options->chart->type = $type;
+  $options->tooltip->formatter = '';
   
   // Chart
   /*$options->chart = (object)array(
