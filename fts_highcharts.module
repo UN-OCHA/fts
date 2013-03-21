@@ -78,8 +78,9 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
       $clusters = $appeal->clusters->Cluster;
       foreach ($clusters as $cluster) {
         $group_id = array_search($cluster->name, $categories);
-        debug($group_id);
-        $data_clusters[$group_id] = array($cluster->name, (int)$cluster->current_requirement);
+        if ($group_id !== FALSE) {
+          $data_clusters[$group_id] = array($cluster->name, (int)$cluster->current_requirement);
+        }
       }
     }
   }
