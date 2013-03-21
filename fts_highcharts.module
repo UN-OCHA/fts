@@ -77,9 +77,11 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
       $clusters = $appeal->clusters->Cluster;
       foreach ($clusters as $cluster) {
         if (!empty($cluster->name)) {
-          $data[$cluster->name]['cluster'] = (int)$cluster->current_requirement - (int)$data[$cluster->name]['funding'];
-          if ($data[$cluster->name]['cluster'] < 0) {
-            $data[$cluster->name]['cluster'] = 0;
+          if (isset($data[$cluster->name]['funding']) {
+            $data[$cluster->name]['cluster'] = (int)$cluster->current_requirement - (int)$data[$cluster->name]['funding'];
+            if ($data[$cluster->name]['cluster'] < 0) {
+              $data[$cluster->name]['cluster'] = 0;
+            }
           }
         }
       }
