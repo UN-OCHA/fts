@@ -67,8 +67,8 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     }
   }
   else {
-    $funding_data[] = array('Not Financed', $not_financed);
     $funding_data[] = array('Financed', $financed);
+    $funding_data[] = array('Not Financed', $not_financed);
   }
   
   uasort($data, "_fts_highcharts_sort_cluster");
@@ -85,12 +85,14 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     $serie = new stdClass();
     $serie->name = t('Unmet requirements');
     $serie->data = $cluster_data;
+    $serie->color = '#D3D3D3';
     $series[] = $serie;
   }
   
   $serie = new stdClass();
   $serie->name = t('Funding Status');
   $serie->data = $funding_data;
+  $serie->color = '#3067BB';
   $series[] = $serie;
   
   $options = new stdClass();
@@ -108,8 +110,8 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   
   // Colors
   $options->colors = array(
+    '#3067BB'
     '#D3D3D3',
-    '#3067BB',
     '#58AE6E',
     '#D23646',
     '#C49C5B',
