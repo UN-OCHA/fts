@@ -66,6 +66,7 @@ function _fts_highcharts_options($settings) {
             if ($data[$cluster->name]['cluster'] < 0) {
               $data[$cluster->name]['cluster'] = 0;
             }
+            $data[$cluster->name]['total'] = $data[$cluster->name]['cluster'] + $data[$cluster->name]['funding'];
           }
         }
       }
@@ -76,7 +77,7 @@ function _fts_highcharts_options($settings) {
     }
     
     if ($groupby == 'cluster') {
-      uasort($data, "_fts_highcharts_sort_cluster");
+      uasort($data, "_fts_highcharts_sort_data");
     }
     
     foreach ($data as $name => $values) {
@@ -106,7 +107,9 @@ function _fts_highcharts_options($settings) {
       $appeal = fts_api_get_appeal_with_funding($appeal, $groupby);
       $data[$appeal->title]['financed'] = (int)$appeal->funding->total;
       $data[$appeal->title]['not_financed'] = (int)$appeal->current_requirements - (int)$appeal->funding->total;
+      $data[$appeal->title]['total'] = $data[$appeal->title]['financed'] + $data[$appeal->title]['not_financed'];
     }
+    uasort($data, "_fts_highcharts_sort_data");
     $financed_data = array();
     $not_financed_data = array();
     foreach ($data as $name => $values) {
@@ -160,11 +163,9 @@ function _fts_highcharts_options($settings) {
   return $options;
 }
 
-function _fts_highcharts_sort_cluster($a, $b) {
-  $a_total = $a['funding'] + $a['cluster'];
-  $b_total = $b['funding'] + $b['cluster'];
-  if ($a_total == $b_total) {
+function _fts_highcharts_sort_data($a, $b) {
+  if ($a['total'] == $b['total']) {
     return 0;
   }
-  return ($a_total < $b_total) ? 1 : -1;
+  return ($a['total'] < $b['total']) ? 1 : -1;
 }
