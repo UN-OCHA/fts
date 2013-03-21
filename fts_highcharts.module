@@ -63,14 +63,14 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
   $series = array();
   $categories = array();
   $data = array();
+  $funding_data = array();
   if (!empty($groupby)) {
     $groups = $appeal->funding->grouping->group;
     foreach ($groups as $group) {
       if (is_object($group->type)) {
         $group->type = '';
       }
-      $data[] = array($group->type, (int)$group->amount);
-      $categories[] = $group->type;
+      $data[$group->type]['funding'] = (int)$group->amount;
     }
     
     if ($groupby == 'cluster') {
@@ -79,26 +79,39 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
       foreach ($clusters as $cluster) {
         $group_id = array_search($cluster->name, $categories);
         if ($group_id !== FALSE) {
-          $data_clusters[$group_id] = array($cluster->name, (int)$cluster->current_requirement);
+          $data[$cluster->name]['cluster'] = (int)$cluster->current_requirement - (int)$data[$cluster->name]['funding'];
         }
       }
+      /*ksort($data_clusters);
+      $data_tmp = array();
+      foreach ($data_clusters as $data_cluster) {
+        $data_tmp[] = $data_cluster;
+      }
+      $data_clusters = $data_tmp;*/
     }
   }
   else {
-    $data[] = array('Financed', $financed);
-    $data[] = array('Not Financed', $not_financed);
+    $funding_data[] = array('Financed', $financed);
+    $funding_data[] = array('Not Financed', $not_financed);
+  }
+  
+  foreach ($data as $name => $values) {
+    $funding_data[] = array($name, $values['funding']);
+    if ($groupby == 'cluster') {
+      $cluster_data[] = array($name, $values['cluster']);
+    }
   }
   
   if ($groupby == 'cluster') {
     $serie = new stdClass();
-    $serie->name = t('Current requirements');
-    $serie->data = $data_clusters;
+    $serie->name = t('Unmet requirements');
+    $serie->data = $cluster_data;
     $series[] = $serie;
   }
   
   $serie = new stdClass();
   $serie->name = t('Funding Status');
-  $serie->data = $data;
+  $serie->data = $funding_data;
   $series[] = $serie;
   
   $options = new stdClass();
