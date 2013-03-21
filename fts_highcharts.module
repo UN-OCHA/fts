@@ -96,18 +96,25 @@ function _fts_highcharts_options($settings) {
   $serie->color = '#3067BB';
   $series[] = $serie;
   
-  $options = new stdClass();
+  $highcharts = new stdClass();
+  switch ($type) {
+    case 'bar':
+      $highcharts = new HighchartsOptionsBarStacked();
+      break;
+  }
+  
+  $options = $highcharts->render();
   
   $options->xAxis->categories = $categories;
   
   // Chart
-  $options->chart = (object)array(
+  /*$options->chart = (object)array(
     'renderTo' => 'container',
     'plotBackgroundColor' => NULL,
     'plotBorderWidth' => NULL,
     'plotShadow' => FALSE,
     'type' => $type,
-  );
+  );*/
   
   // Colors
   $options->colors = array(
@@ -137,7 +144,7 @@ function _fts_highcharts_options($settings) {
   $options->series = $series;
 
   // Diable credits.
-  $options->credits->enabled = FALSE;
+  //$options->credits->enabled = FALSE;
 
   return $options;
 }
