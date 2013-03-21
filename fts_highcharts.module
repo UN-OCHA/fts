@@ -109,6 +109,7 @@ function _fts_highcharts_options($settings) {
   $options = $highcharts->render();
   
   $options->xAxis->categories = $categories;
+  $options->chart->type = $type;
   
   // Chart
   /*$options->chart = (object)array(
@@ -133,21 +134,18 @@ function _fts_highcharts_options($settings) {
   $options->title->text = $title;
   
   // Plot options.
-  $options->plotOptions->pie = (object)array(
+  /*$options->plotOptions->pie = (object)array(
     'allowPointSelect' => TRUE,
     'cursor' => 'pointer',
     'dataLabels' => array(
       'enabled' => FALSE,
     ),
     'showInLegend' => TRUE,
-  );
+  );*/
   
-  $options->plotOptions->series = (object)array('stacking' => 'normal');
+  //$options->plotOptions->series = (object)array('stacking' => 'normal');
   
   $options->series = $series;
-
-  // Diable credits.
-  //$options->credits->enabled = FALSE;
 
   return $options;
 }
