@@ -93,7 +93,7 @@ function _fts_highcharts_options($id, $groupby = '', $type = '') {
     $funding_data[] = array('Not Financed', $not_financed);
   }
   
-  usort($data, "_fts_highcharts_sort_cluster");
+  uasort($data, "_fts_highcharts_sort_cluster");
   
   foreach ($data as $name => $values) {
     $funding_data[] = array($name, $values['funding']);
