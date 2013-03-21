@@ -178,5 +178,5 @@ function _fts_highcharts_sort_cluster($a, $b) {
   if ($a_total == $b_total) {
     return 0;
   }
-  return ($a_total < $b_total) ? -1 : 1;
+  return ($a_total < $b_total) ? 1 : -1;
 }
