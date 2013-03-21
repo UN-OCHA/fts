@@ -63,6 +63,7 @@ class FTSHighchartsBean extends BeanPlugin {
       '#title' => t('Appeal ID'),
       '#required' => TRUE,
       '#default_value' => $default_appeal,
+      '#multiple' => TRUE,
     );
     
     $groupby_options = array(
