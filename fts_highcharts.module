@@ -74,7 +74,7 @@ function _fts_highcharts_get_data($settings) {
     }
     else {
       $funding_data[] = array('Financed', $financed);
-      $funding_data[] = array('Not Financed', $not_financed);
+      $funding_data[] = array('Unmet requirements', $not_financed);
     }
     
     if ($groupby == 'cluster') {
@@ -98,7 +98,7 @@ function _fts_highcharts_get_data($settings) {
     }
     
     $serie = new stdClass();
-    $serie->name = t('Funding Status');
+    $serie->name = t('Financed');
     $serie->data = $funding_data;
     //$serie->color = '#3067BB';
     $series[] = $serie;
@@ -119,7 +119,7 @@ function _fts_highcharts_get_data($settings) {
       $not_financed_data[] = array($name, $values['not_financed']);
     }
     $series[] = (object)array(
-      'name' => t('Not Financed'),
+      'name' => t('Unmet requirements'),
       'data' => $not_financed_data,
       //'color' => '#D3D3D3',
     );
@@ -157,8 +157,8 @@ function _fts_highcharts_options($settings) {
   
   // Colors
   $options->colors = array(
-    '#D3D3D3',
     '#3067BB',
+    '#D3D3D3',
     '#58AE6E',
     '#D23646',
     '#C49C5B',
@@ -168,7 +168,17 @@ function _fts_highcharts_options($settings) {
   // Title
   $options->title->text = $title;
   
-  $options->series = $data['series'];
+  $series = $data['series'];
+  foreach ($series as $serie) {
+    if ($serie->name == t('Financed')) {
+      $serie->color = '#3067BB';
+    }
+    elseif ($serie->name == t('Unmet requirements')) {
+      $serie->color = '#D3D3D3';
+    }
+  }
+  
+  $options->series = $series;
 
   return $options;
 }
