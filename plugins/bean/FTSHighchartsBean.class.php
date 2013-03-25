@@ -95,7 +95,7 @@ class FTSHighchartsBean extends BeanPlugin {
   public function view($bean, $content, $view_mode = 'default', $langcode = NULL) {
     $settings = $bean->settings;
     $settings['title'] = $bean->title;
-    $options = _fts_highcharts_options($settings);
+    $options = fts_highcharts_render($settings);
     $attributes = array();
     $content = highcharts_render($options, $attributes);
     return $content;

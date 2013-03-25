@@ -93,14 +93,12 @@ function _fts_highcharts_get_data($settings) {
       $serie = new stdClass();
       $serie->name = t('Unmet requirements');
       $serie->data = $cluster_data;
-      //$serie->color = '#D3D3D3';
       $series[] = $serie;
     }
     
     $serie = new stdClass();
     $serie->name = t('Financed');
     $serie->data = $funding_data;
-    //$serie->color = '#3067BB';
     $series[] = $serie;
   }
   else {
@@ -121,18 +119,16 @@ function _fts_highcharts_get_data($settings) {
     $series[] = (object)array(
       'name' => t('Unmet requirements'),
       'data' => $not_financed_data,
-      //'color' => '#D3D3D3',
     );
     $series[] = (object)array(
       'name' => t('Financed'),
       'data' => $financed_data,
-      //'color' => '#3067BB',
     );
   }
   return array('categories' => $categories, 'series' => $series);
 }
 
-function _fts_highcharts_options($settings) {
+function fts_highcharts_render($settings) {
   extract($settings);
   // Hack while we wait for a proper highcharts setting in the configuration
   variable_set('highcharts_exporting', 1);
