@@ -31,10 +31,11 @@ function fts_highcharts_bean_types() {
   return $plugins;
 }
 
-function _fts_highcharts_options($settings) {
+/**
+ * Get data series
+ */
+function _fts_highcharts_get_data($settings) {
   extract($settings);
-  // Hack while we wait for a proper highcharts setting in the configuration
-  variable_set('highcharts_exporting', 1);
   // Get appeals
   $appeals = explode(',', $appeal);
   $series = array();
@@ -128,6 +129,15 @@ function _fts_highcharts_options($settings) {
       'color' => '#3067BB',
     );
   }
+  return array('categories' => $categories, 'series' => $series);
+}
+
+function _fts_highcharts_options($settings) {
+  extract($settings);
+  // Hack while we wait for a proper highcharts setting in the configuration
+  variable_set('highcharts_exporting', 1);
+  
+  $data = _fts_highcharts_get_data($settings);
   
   $highcharts = new stdClass();
   switch ($type) {
@@ -141,7 +151,7 @@ function _fts_highcharts_options($settings) {
   
   $options = $highcharts->render();
   
-  $options->xAxis->categories = $categories;
+  $options->xAxis->categories = $data['categories'];
   $options->chart->type = $type;
   $options->tooltip->formatter = '';
   
@@ -158,7 +168,7 @@ function _fts_highcharts_options($settings) {
   // Title
   $options->title->text = $title;
   
-  $options->series = $series;
+  $options->series = $data['series'];
 
   return $options;
 }
