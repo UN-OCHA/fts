@@ -4,5 +4,5 @@ core = 7.x
 package = "FTS"
 
 dependencies[] = fts_api
-dependencies[] = highcharts
+dependencies[] = highcharts (2.x)
 dependencies[] = bean

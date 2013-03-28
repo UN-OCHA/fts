@@ -158,6 +158,7 @@ function fts_highcharts_render($settings) {
   // Title
   $options->title->text = $title;
   
+  // @todo Find a way to put this out of the module
   $series = $data['series'];
   foreach ($series as $serie) {
     if ($serie->name == t('Financed')) {
