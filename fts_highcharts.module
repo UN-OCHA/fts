@@ -132,6 +132,9 @@ function _fts_highcharts_get_data($settings) {
   return array('categories' => $categories, 'series' => $series);
 }
 
+/**
+ * Render function
+ */
 function fts_highcharts_render($settings) {
   extract($settings);
   // Hack while we wait for a proper highcharts setting in the configuration
@@ -174,6 +177,9 @@ function fts_highcharts_render($settings) {
   return $options;
 }
 
+/**
+ * Sort data
+ */
 function _fts_highcharts_sort_data($a, $b) {
   if ($a['total'] == $b['total']) {
     return 0;
