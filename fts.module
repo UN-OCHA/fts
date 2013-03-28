@@ -10,12 +10,12 @@
  */
 define('FTS_URL', 'http://fts.unocha.org/api/v1/');
 
-function fts_api_get_appeal($id) {
+function fts_get_appeal($id) {
   $xml = simplexml_load_file(FTS_URL . 'appeal/id/' . $id . '.xml');
   return $xml->Appeal;
 }
 
-function fts_api_get_funding_by_appeal($id, $groupby = '') {
+function fts_get_funding_by_appeal($id, $groupby = '') {
   $url = FTS_URL . 'funding.xml?appeal=' . $id;
   if (!empty($groupby)) {
     $url .= '&groupby='.$groupby;
@@ -24,23 +24,23 @@ function fts_api_get_funding_by_appeal($id, $groupby = '') {
   return $xml;
 }
 
-function fts_api_get_cluster_by_appeal($id) {
+function fts_get_cluster_by_appeal($id) {
   $url = FTS_URL . 'cluster/appeal/'.$id.'.xml';
   $xml = simplexml_load_file($url);
   return $xml;
 }
 
-function fts_api_get_appeal_with_funding($id, $groupby = '') {
-  $appeal = fts_api_get_appeal($id);
+function fts_get_appeal_with_funding($id, $groupby = '') {
+  $appeal = fts_get_appeal($id);
   $appeal = json_decode(json_encode($appeal));
   
-  $funding = fts_api_get_funding_by_appeal($id, $groupby);
+  $funding = fts_get_funding_by_appeal($id, $groupby);
   $funding = json_decode(json_encode($funding));
   $appeal->funding = $funding;
   
   switch ($groupby) {
     case 'cluster':
-      $clusters = fts_api_get_cluster_by_appeal($id);
+      $clusters = fts_get_cluster_by_appeal($id);
       $clusters = json_decode(json_encode($clusters));
       $appeal->clusters = $clusters;
       break;

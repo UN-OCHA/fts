@@ -3,6 +3,6 @@ description = Integrates the FTS API with the Highcharts library.
 core = 7.x
 package = "FTS"
 
-dependencies[] = fts_api
+dependencies[] = fts
 dependencies[] = highcharts (2.x)
 dependencies[] = bean

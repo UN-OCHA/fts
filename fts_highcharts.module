@@ -43,7 +43,7 @@ function _fts_highcharts_get_data($settings) {
   $data = array();
   if (count($appeals) == 1) {
     // Get latest FTS data
-    $appeal = fts_api_get_appeal_with_funding($appeal, $groupby);
+    $appeal = fts_get_appeal_with_funding($appeal, $groupby);
     $financed = (int)$appeal->funding->total;
     $not_financed = (int)$appeal->current_requirements - (int)$appeal->funding->total;
     $funding_data = array();
@@ -105,7 +105,7 @@ function _fts_highcharts_get_data($settings) {
   }
   else {
     foreach ($appeals as $appeal) {
-      $appeal = fts_api_get_appeal_with_funding($appeal, $groupby);
+      $appeal = fts_get_appeal_with_funding($appeal, $groupby);
       $data[$appeal->title]['financed'] = (int)$appeal->funding->total;
       $data[$appeal->title]['not_financed'] = (int)$appeal->current_requirements - (int)$appeal->funding->total;
       $data[$appeal->title]['total'] = $data[$appeal->title]['financed'] + $data[$appeal->title]['not_financed'];
