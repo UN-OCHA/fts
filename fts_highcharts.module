@@ -91,12 +91,14 @@ function _fts_highcharts_get_data($settings) {
     
     if ($groupby == 'cluster') {
       $serie = new stdClass();
+      $serie->id = 'unmet';
       $serie->name = t('Unmet requirements');
       $serie->data = $cluster_data;
       $series[] = $serie;
     }
     
     $serie = new stdClass();
+    $serie->id = 'financed';
     $serie->name = t('Financed');
     $serie->data = $funding_data;
     $series[] = $serie;
@@ -117,10 +119,12 @@ function _fts_highcharts_get_data($settings) {
       $not_financed_data[] = array($name, $values['not_financed']);
     }
     $series[] = (object)array(
+      'id' => 'unmet',
       'name' => t('Unmet requirements'),
       'data' => $not_financed_data,
     );
     $series[] = (object)array(
+      'id' => 'financed',
       'name' => t('Financed'),
       'data' => $financed_data,
     );
